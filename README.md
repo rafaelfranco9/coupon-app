@@ -1,73 +1,132 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Mercado Libre Cupones 🏷 
+#
+## Ejercicio técnico.
+#
+#
+Mercado Libre está implementando un nuevo beneficio para los usuarios que más usan la
+plataforma con un cupón de cierto monto gratis que les permitirá comprar tantos items
+marcados como favoritos que no excedan el monto total. Para esto se está analizando
+construir una API que dado una lista de item_id y el monto total pueda darle la lista de items
+que maximice el total gastado sin excederlo.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+#### Ejemplo:
+Dada la siguiente lista de precios y un cupón válido por **$500**
+| Item_id | Precio |
+| ------ | ------ |
+| MLA1 | $100 |
+| MLA2 | $210 |
+| MLA3 | $260 |
+| MLA4 | $80 |
+| MLA5 | $90 |
+La respuesta sería
+```sh
+[“MLA1”, “MLA2”, “MLA4”, “MLA5”]
 ```
 
-## Running the app
+#### Requerimientos
+\.**1.**  Programar (en cualquier lenguaje de programación) la funcionalidad mencionada
+respetando la siguiente firma: _(Lenguajes sugeridos: Java, Golang, Javascript.)_
+```sh
+List<String> calculate(Map<String, Float> items, Float amount)
+```
+\.**2.** Crear una **API REST**, con el servicio “/coupon/” en donde se pueda enviar la lista de
+item_ids y el monto del cupón y devuelva los items que tendría que comprar el usuario y
+el monto total gastado
 
-```bash
-# development
-$ npm run start
+`Consideraciones:`
+\- Sólo se puede comprar una unidad por item_id.
+\- No hay preferencia en la cantidad total de items siempre y cuando gasten el máximo posible.
+\- El precio puede contener hasta 2 decimales.
 
-# watch mode
-$ npm run start:dev
+**Ejemplo para solicitud: POST /coupon/**
 
-# production mode
-$ npm run start:prod
+Request Body:
+```sh
+{
+    "item_ids": ["MLA1", "MLA2", "MLA3", "MLA4", "MLA5"],
+    "amount": 500
+}
+```
+Response:
+```sh
+{
+    "item_ids": ["MLA1", "MLA2", "MLA4", "MLA5"],
+    "total": 480
+}
 ```
 
-## Test
 
-```bash
-# unit tests
-$ npm run test
+## Instalación
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+\.**1.** Clonar repositorio del proyecto
+```sh
+https://github.com/rafaelfranco9/coupon-app
+```
+\.**2.** Entrar en la carpeta contenedora e instalar dependencias
+```sh
+cd coupon-app && npm install 
+```
+\.**3.** Iniciar aplicación
+```
+npm run start:dev
 ```
 
-## Support
+\* Por defecto la aplicación se ejecuta en el puerto `5000`
+```
+http://localhost:5000/coupon
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Usabilidad
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+| Método | Endpoint | descripción |
+|--|--|--|
+|POST|/coupon| Obtener productos disponibles según monto del cupón
 
-## License
+**Esquema de body**
+```sh
+{
+    "item_ids": String[],  # Listado con ID de productos favoritos
+    "amount": Number       # Monto del cupón
+}
+```
+`Consideraciones:`
+1. Si el body del mensaje no posee el formato correcto, se responderá con un código **400**
+    ```sh
+    {
+        "statusCode": 400,
+        "message": "Validation failed",
+        "error": "Bad Request"
+    }
+    ```
+2. El código de los productos debe coincidir con el siguiente formato **MLA** + **000000000**
+    de lo contrario el servidor responderá con un estado **400**
+    Ejemplo:  **MLA879479072**
 
-Nest is [MIT licensed](LICENSE).
+3. Si el monto del cupón no es suficiente para comprar al menos un producto, el servidor responderá con un estado **404**
+
+#
+### Datos de prueba
+
+```sh
+{
+    "items_ids": [
+        "MLA879479072", "MLA903097169", "MLA836361291", "MLA877427668", "MLA901212806", "MLA904161848",
+        "MLA775138148", "MLA852874834", "MLA615381414", "MLA611119572", "MLA611119572", "MLA835929721",
+        "MLA611841338", "MLA886707517", "MLA862219168"
+    ],
+    "amount": 5607.99
+}
+```
+# 
+`response`
+```sh
+{
+	"items_ids": [
+		"MLA775138148",
+		"MLA611841338",
+		"MLA611119572"
+	],
+	"amount": 5598.00
+}
+```
